@@ -1,0 +1,27 @@
+{
+  "name": "imooc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.12.2",
+    "express": "^4.10.4",
+    "jade": "^1.9.2",
+    "moment": "^2.9.0",
+    "multer": "^0.1.8",
+    "serve-static": "^1.9.2",
+    "underscore": "^1.8.2",
+    "mongoose": "^3.8.25"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines":{
+    "node": "0.10.x",
+    "npm": "1.4.x"
+
+  }
+  "author": "liufeilai@gmail.com",
+  "license": "ISC"
+}

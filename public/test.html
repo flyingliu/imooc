@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+
+<script>
+  function P(name) {
+    this.name = name;
+  };
+
+  P.prototype.greet = function(oname) {
+    return "Hi " + oname + ",my name is " + this.name;
+  }
+
+  p1 = new P('a');
+  console.log(p1.greet('b'));
+
+var sarr = [1,2,3,4,5,6,7,8,9,10];
+function sum(array) {
+  return array.reduce(function(prev,current,index,array){
+    return prev + current;
+  });
+}
+
+String.prototype.reverse = function(){
+  return this.split("").reverse().join("");
+}
+
+
+function NameMe(first, last) {
+    this.firstName = first;
+    this.lastName = last;
+    this.name = this.firstName + ' ' + this.lastName;
+    return this;
+}
+
+function sortGiftCode(code){
+  return code.split("").sort().join("");
+}
+
+console.log(sortGiftCode("bca"));
+
+var n = new NameMe('John', 'Doe');
+console.log(n);
+
+//   var sum = sarr.reduce(function (previous, current, index, array) {
+//   return previous + current;
+// });
+
+console.log(sum(sarr)); // 10
+
+</script>
+
+</body>
+</html>
