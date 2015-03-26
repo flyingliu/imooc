@@ -17,7 +17,7 @@ app.locals.moment = require('moment')
 if(process.env === "development") {
   mongoose.connect('mongodb://localhost/imooc');
 } else {
-  mongoose.connect('mongodb://localhost/imooc');
+  mongoose.connect('mongodb://imooc:fly2431757@ds041188.mongolab.com:41188/imooc');
 }
 
 
