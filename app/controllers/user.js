@@ -8,20 +8,18 @@ exports.signup =  function(req,res) {
       console.log(err);
     }
     if(user.length) {
-      return res.redirect('/')
+      return res.redirect('/signin')
     } else {
       var user = new User(_user);
       user.save(function(err, user){
         if(err) {
           console.log(err);
         }
-        res.redirect('/admin/userlist')
+        res.redirect('/')
       });
     }
   })
-
 }
-
 
 // user signin
 exports.signin = function(req, res) {
@@ -30,9 +28,23 @@ exports.signin = function(req, res) {
   var password = _user.password;
   User.findOne({name: name,password: password}, function(err, user) {
     if (err) console.log(err);
-    if (!user) return res.redirect('/admin/list');
+    if (!user) return res.redirect('/signup');
     req.session.user = user;
     return res.redirect('/');
+  });
+}
+
+// user showsignup
+exports.showsignup =  function(req,res) {
+  res.render('signup',{
+    title:'注册'
+  });
+}
+
+// user showsignin
+exports.showsignin = function(req, res) {
+  res.render('signin',{
+    title:'登录'
   });
 }
 
@@ -58,3 +70,20 @@ exports.list = function(req,res){
     });
   })
 }
+
+
+//user signinReq
+
+exports.signinReq = function(req,res, next){
+  var user = req.session.user;
+  if(!user) return res.redirect('/signin');
+  next();
+}
+
+//user adminReq
+exports.adminReq = function(req,res, next){
+  var user = req.session.user;
+  if(user.role <= 10) return res.redirect('/signin');
+  next();
+}
+

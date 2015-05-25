@@ -1,6 +1,7 @@
 var Movie = require('../app/controllers/movie');
 var User = require('../app/controllers/user');
 var Index = require('../app/controllers/index');
+var Comment = require('../app/controllers/comment');
 
 module.exports = function(app) {
   app.use(function(req,res,next){
@@ -15,16 +16,21 @@ module.exports = function(app) {
   // user 
   app.post('/user/signup',User.signup)
   app.post('/user/signin',User.signin);
+  app.get('/signup',User.showsignup);
+  app.get('/signin',User.showsignin);
   app.get('/logout', User.logout);
-  app.get('/admin/userlist',User.list);
+  app.get('/admin/user/list',User.signinReq, User.adminReq, User.list);
 
   //movie
   app.get('/movie/:id', Movie.detail);
-  app.get('/admin/movie', Movie.new);
-  app.delete('/admin/list', Movie.del);
-  app.get('/amdin/updata/:id', Movie.updata);
-  app.post('/admin/movie/new', Movie.save);
-  app.get('/admin/list', Movie.list);
+  app.get('/admin/movie/new', User.signinReq, User.adminReq, Movie.new);
+  app.delete('/admin/movie/list', User.signinReq, User.adminReq, Movie.del);
+  app.get('/amdin/movie/updata/:id', User.signinReq, User.adminReq, Movie.updata);
+  app.post('/admin/movie/new', User.signinReq, User.adminReq, Movie.save);
+  app.get('/admin/movie/list', User.signinReq, User.adminReq, Movie.list);
+
+  //comment
+  app.post('/user/comment', User.signinReq, Comment.save);
 
 }
 
