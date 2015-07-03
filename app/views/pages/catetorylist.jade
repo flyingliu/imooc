@@ -5,18 +5,18 @@ block content
       table.table.table-hover.table-bordered
         thead
           tr
-            th 名字
+            th 分类名字
             th 录入时间
             th 查看
             th 更新
             th 删除
         tbody
-          each item in users
+          each item in catetories
             tr(class="item-id-#{item._id}")
               td= item.name
               td= moment(item.meta.createAt).format('YYYY/MM/DD')
-              td: a(target="_blank",href="../movie/#{item._id}") 查看
-              td: a(target="_blank",href="../amdin/updata/#{item._id}") 修改
+              td: a(target="_blank",href="/movie/#{item._id}") 查看
+              td: a(target="_blank",href="/amdin/movie/updata/#{item._id}") 修改
               td
                 button.btn.btn-danger.del(data-id="#{item._id}") 删除
   script(src="/public/js/main.js")

@@ -2,6 +2,7 @@ var Movie = require('../app/controllers/movie');
 var User = require('../app/controllers/user');
 var Index = require('../app/controllers/index');
 var Comment = require('../app/controllers/comment');
+var Catetory = require('../app/controllers/catetory');
 
 module.exports = function(app) {
   app.use(function(req,res,next){
@@ -31,6 +32,11 @@ module.exports = function(app) {
 
   //comment
   app.post('/user/comment', User.signinReq, Comment.save);
+
+  //catetory
+  app.get('/admin/catetory/new', User.signinReq, User.adminReq, Catetory.new);
+  app.get('/admin/catetory/list', User.signinReq, User.adminReq, Catetory.list);
+  app.post('/admin/catetory', User.signinReq, User.adminReq, Catetory.save);
 
 }
 

@@ -1,12 +1,10 @@
 var mongoose = require('mongoose');
-// var bcrypt = require('bcrypt-nodejs');
-// var SALT_WORK_FACTOR = 10;
-var UserSchema = new mongoose.Schema({
-  name: {
-    unique: true,
-    type: String
-  },
-  password: String,
+var Schema = mongoose.Schema;
+var ObjectId = Schema.Types.ObjectId;
+
+var CatetorySchema = new mongoose.Schema({
+  movies: [{type: ObjectId, ref: 'Movie'}],
+  name: String,
   meta: {
     createAt: {
       type: Date, 
@@ -19,26 +17,17 @@ var UserSchema = new mongoose.Schema({
   }
 });
 
-UserSchema.pre('save', function(next){
-  var user = this;
+CatetorySchema.pre('save', function(next){
   if (this.isNew) {
     this.meta.createAt = this.meta.updateAt = Date.now()
   }
   else {
     this.meta.updateAt = Date.now()
   }
-  // bcrypt.hash(user.password, null, null, function (err, hash){
-  //   if (err) {
-  //     return next(err)
-  //   }
-  //   user.password = hash;
-  //   console.log(hash);
-  //   next()
-  // })
   next()
 });
 
-UserSchema.statics = {
+CatetorySchema.statics = {
   fetch: function(cb) {
     return this
       .find({})
@@ -52,4 +41,4 @@ UserSchema.statics = {
   }
 }
 
-module.exports = UserSchema;
+module.exports = CatetorySchema;

@@ -1,4 +1,5 @@
 var Movie = require('../models/movie');
+var Catetory = require('../models/catetory');
 var Comment = require('../models/comment');
 var _ = require('underscore');
 
@@ -21,19 +22,13 @@ exports.detail = function(req,res){
 }
 
 exports.new = function(req,res){
-  res.render('admin',{
-    title:'imooc admin',
-    movie: {
-      doctor: '', 
-      country: '', 
-      title: '',
-      year: '', 
-      poster:'', 
-      language: '', 
-      flash: '', 
-      summary: '' 
-      }
-    });
+  Catetory.find({}, function(err, catetories){
+    res.render('admin',{
+      title:'imooc admin',
+      catetories:catetories,
+      movie: {}
+      });
+  })
 }
 
 
@@ -58,13 +53,15 @@ exports.updata = function(req,res){
   var id = req.params.id;
   if(id) {
     Movie.findById(id, function(err, movie) {
-      res.render('admin', {
-        title: 'imooc 后台更新页',
-        movie: movie
+      Catetory.find({}, function(err, catetories){
+        res.render('admin', {
+          title: 'imooc 后台更新页',
+          movie: movie,
+          catetories:catetories
+        })
       })
     })
   }
-
 }
 
 
@@ -73,36 +70,33 @@ exports.save = function(req, res) {
   var id = req.body.movie._id;
   var movieObj = req.body.movie;
   var _movie;
-  if (id !== 'undefined') {
+  if (id) {
     Movie.findById(id, function(err, movie){
-      if (err) {
-        console.log(err);
-      }
+      if (err) console.log(err);
       _movie = _.extend(movie, movieObj);
+      var catetoryId = _movie.catetory;
       _movie.save(function(err, movie){
-        if (err) {
-          console.log(err);
-        }
-        res.redirect('/movie/' + movie._id);
+        if (err) console.log(err);
+        Catetory.findById(catetoryId, function(err, catetory){
+          catetory.movies.push(movie._id);
+          catetory.save(function(err, catetory){
+            res.redirect('/movie/' + movie._id);
+          });
+        });
       });
     })
   }
   else {
-    _movie = new Movie({
-      doctor: movieObj.doctor,
-      title: movieObj.title,
-      country: movieObj.country,
-      language: movieObj.language,
-      year: movieObj.year,
-      poster: movieObj.poster,
-      summary: movieObj.summary,
-      flash: movieObj.flash
-    })
+    _movie = new Movie(movieObj);
+    var catetoryId = _movie.catetory;
     _movie.save(function(err, movie){
-      if (err) {
-        console.log(err);
-      }
-      res.redirect('/movie/' + movie._id);
+      if (err) console.log(err);
+      Catetory.findById(catetoryId, function(err, catetory){
+        catetory.movies.push(movie._id);
+        catetory.save(function(err, catetory){
+          res.redirect('/movie/' + movie._id);
+        });
+      });
     });
   }
 }
